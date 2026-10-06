@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agenda do Showroom · Luxor Vending</title>
+<style>
+:root{--bg:#f5f2ee;--card:#fff;--ink:#2b2724;--mute:#6f675f;--line:#e2dbd2;--head:#3c3c3c;--gold:#c9a46a;--ok:#2f7d5b;--hold:#b97a0e;--off:#b3443a;--okbg:#e4f2ea;--holdbg:#fbefd5;--offbg:#f7e0dd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a18;--card:#262322;--ink:#f1ece6;--mute:#a79e94;--line:#3a3532;--head:#2a2826;--ok:#5fc095;--hold:#e0a73f;--off:#e27a6f;--okbg:#1f3329;--holdbg:#3a2f18;--offbg:#3d2321}}
+:root[data-theme="dark"]{--bg:#1c1a18;--card:#262322;--ink:#f1ece6;--mute:#a79e94;--line:#3a3532;--head:#2a2826;--ok:#5fc095;--hold:#e0a73f;--off:#e27a6f;--okbg:#1f3329;--holdbg:#3a2f18;--offbg:#3d2321}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100%}
+header{background:var(--head);color:#fff;padding:14px 16px}
+header h1{margin:0;font-size:18px;letter-spacing:.5px}header h1 span{color:var(--gold)}
+header p{margin:2px 0 0;font-size:12px;opacity:.7}
+main{max-width:760px;margin:0 auto;padding:12px}
+.banner{background:var(--holdbg);color:var(--hold);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:13px}
+.tabs{display:flex;gap:6px;margin-bottom:10px}
+.tabs button{flex:1}
+button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:9px 12px;cursor:pointer}
+button.pri{background:var(--head);color:#fff;border-color:var(--head)}
+button.on{background:var(--head);color:#fff;border-color:var(--head)}
+button.ghost{color:var(--mute)}button.danger{color:var(--off)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.nav b{font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{font-size:11px;color:var(--mute);text-align:center;padding-bottom:2px}
+.day{min-height:56px;padding:4px 2px;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:14px;background:var(--bg);border:2px solid transparent}
+.day.we{opacity:.55}.day.today b{background:var(--gold);color:#222;border-radius:50%;width:24px;height:24px;display:grid;place-items:center}
+.day.sel{border-color:var(--head)}
+.day.off{background:var(--offbg)}
+.tag{font-style:normal;font-size:10px;padding:1px 5px;border-radius:8px;font-weight:600}
+.tag.ok{background:var(--okbg);color:var(--ok)}.tag.hold{background:var(--holdbg);color:var(--hold)}.tag.off{background:var(--off);color:#fff}.tag.warn{background:var(--hold);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--mute);margin-top:8px}
+h2{margin:0 0 4px;font-size:17px;text-transform:capitalize}
+.sub{color:var(--mute);font-size:13px;margin-bottom:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.slot{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:12px;margin-top:8px}
+.slot .t{font-weight:700;min-width:46px}
+.slot .body{flex:1;min-width:0}
+.slot.agendado{background:var(--okbg);border-color:transparent}.slot.reservado{background:var(--holdbg);border-color:transparent}.slot.bloqueado{background:var(--offbg);border-color:transparent}
+.slot.free .acts{display:flex;gap:6px;flex-wrap:wrap}.slot.free .acts button{padding:6px 10px;font-size:13px}
+.slot.free .fl{color:var(--mute);margin-right:auto;display:block;margin-bottom:6px}
+.slot[data-a]{cursor:pointer}
+.tipo{font-style:normal;font-size:11px;font-weight:700;padding:1px 8px;border-radius:8px;background:var(--head);color:#fff;margin-left:4px;white-space:nowrap}.tipo.cf{background:var(--gold);color:#222}.tipo.tr{background:#5b6fb0;color:#fff}
+select{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.chip{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.agendado .chip{color:var(--ok)}.reservado .chip{color:var(--hold)}.bloqueado .chip{color:var(--off)}
+.mach{margin-top:4px;font-size:13px}.mach.pend{color:var(--hold);font-weight:600}
+.meta{font-size:12px;color:var(--mute);margin-top:4px}
+.dayoff{background:var(--offbg);color:var(--off);border-radius:10px;padding:10px;margin:8px 0;font-weight:600}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;z-index:9}
+#modal.open{display:flex}
+.sheet{background:var(--card);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px calc(16px) calc(16px + env(safe-area-inset-bottom,0px))}
+.sheet h3{margin:0 0 10px}
+label{display:block;font-size:12px;color:var(--mute);margin:10px 0 3px}
+input[type=text],textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+textarea{min-height:70px}
+.seg{display:flex;gap:6px}.seg button{flex:1;padding:8px 4px;font-size:13px}
+.chk{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14px;color:var(--ink)}
+.chk input{width:20px;height:20px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--head);color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;display:none;z-index:10}
+.empty{color:var(--mute);text-align:center;padding:20px}
+</style></head>
+<body>
+<header><h1>LUXOR <span>·</span> Agenda do Showroom</h1><p>Visitas de clientes · Rod. Anhanguera, 16950 – São Paulo</p></header>
+<main><div id="app"></div></main>
+<div id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const TIMES=['09:00','10:00','11:00','13:00','14:00','15:00','16:00'];
+const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const DOW=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const LBL={agendado:'Cliente agendado',reservado:'Reservado',bloqueado:'Bloqueado'};
+const pad=n=>String(n).padStart(2,'0');
+const ds=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pd=s=>new Date(s+'T12:00:00');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const today=ds(new Date());
+let S={slots:{},days:{}},db=null,canWrite=true,view='cal',sel=today,pending=false,mstate='agendado',mctx=null;
+let cur=new Date();cur.setDate(1);
+const longDate=k=>{const d=pd(k);return ['domingo','segunda','terça','quarta','quinta','sexta','sábado'][d.getDay()]+', '+d.getDate()+' de '+MES[d.getMonth()]};
+const myName=()=>{try{return localStorage.getItem('showroom_nome')||''}catch(e){return ''}};
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',2600)}
+
+let apiReady=false;
+let syncBusy=false;
+let syncTimer=null;
+
+async function api(path, options={}){
+  const r=await fetch('/.netlify/functions/agenda'+path, {
+    ...options,
+    headers:{'Content-Type':'application/json',...(options.headers||{})}
+  });
+  let body=null;
+  try{body=await r.json()}catch(e){}
+  if(!r.ok) throw new Error(body&&body.error||'Erro de comunicação');
+  return body;
+}
+
+async function loadData(silent=false){
+  if(syncBusy)return;
+  syncBusy=true;
+  try{
+    const data=await api('/data');
+    S.slots=data.slots||{};
+    S.days=data.days||{};
+    apiReady=true;
+    window.__tried=true;
+    render();
+  }catch(e){
+    apiReady=false;
+    window.__tried=true;
+    if(!silent)toast('Não foi possível conectar à agenda.');
+    render();
+  }finally{
+    syncBusy=false;
+  }
+}
+
+async function put(col,id,data){
+  try{
+    await api('/'+encodeURIComponent(col)+'/'+encodeURIComponent(id),{
+      method:'PUT',body:JSON.stringify(data)
+    });
+    S[col][id]=data;
+    render();
+    return true;
+  }catch(e){
+    toast('Não foi possível salvar. Tente novamente.');
+    return false;
+  }
+}
+
+async function del(col,id){
+  try{
+    await api('/'+encodeURIComponent(col)+'/'+encodeURIComponent(id),{method:'DELETE'});
+    delete S[col][id];
+    render();
+    return true;
+  }catch(e){
+    toast('Não foi possível remover. Tente novamente.');
+    return false;
+  }
+}
+
+async function init(){
+  render();
+  await loadData();
+  clearInterval(syncTimer);
+  syncTimer=setInterval(()=>{if(!$('modal').classList.contains('open'))loadData(true)},5000);
+}
+
+const slotsOf=k=>TIMES.map(t=>({t,d:S.slots[k+'_'+t]}));
+const isPend=d=>d&&d.status==='agendado'&&d.machine&&!d.ready;
+
+function calHtml(){
+  const y=cur.getFullYear(),m=cur.getMonth(),off=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+  let h='<div class="nav"><button data-a="prev">‹</button><b style="text-transform:capitalize">'+MES[m]+' '+y+'</b><button data-a="next">›</button></div><div class="grid">'+DOW.map(d=>'<div class="dow">'+d+'</div>').join('');
+  for(let i=0;i<off;i++)h+='<div></div>';
+  for(let d=1;d<=n;d++){
+    const k=y+'-'+pad(m+1)+'-'+pad(d),wd=(off+d-1)%7,sl=slotsOf(k).map(x=>x.d).filter(Boolean);
+    const ag=sl.filter(x=>x.status==='agendado').length,rs=sl.filter(x=>x.status==='reservado').length,pe=sl.some(isPend);
+    const blk=S.days[k];
+    h+='<button class="day'+(k===sel?' sel':'')+(k===today?' today':'')+(blk?' off':'')+(wd>4?' we':'')+'" data-a="pick" data-k="'+k+'"><b>'+d+'</b>'+
+      (blk?'<i class="tag off">Indisp.</i>':(ag?'<i class="tag ok">'+ag+' vis.</i>':'')+(rs?'<i class="tag hold">'+rs+' res.</i>':'')+(pe?'<i class="tag warn">!</i>':''))+'</button>';
+  }
+  return h+'</div><div class="legend"><span><i class="tag ok">n vis.</i> cliente agendado</span><span><i class="tag hold">n res.</i> reservado</span><span><i class="tag warn">!</i> máquina sem revisão</span><span><i class="tag off">Indisp.</i> dia fechado</span></div>';
+}
+function slotHtml(k,x){
+  const id=k+'_'+x.t,d=x.d;
+  if(!d)return '<div class="slot free"><span class="t">'+x.t+'</span><div class="body"><span class="fl">Livre</span>'+(canWrite?'<div class="acts"><button class="pri" data-a="new" data-k="'+k+'" data-t="'+x.t+'" data-s="agendado">Agendar cliente</button><button data-a="new" data-k="'+k+'" data-t="'+x.t+'" data-s="reservado">Reservar</button><button class="ghost" data-a="new" data-k="'+k+'" data-t="'+x.t+'" data-s="bloqueado">Bloquear</button></div>':'')+'</div></div>';
+  let b='<div class="chip">'+LBL[d.status]+'</div>';
+  if(d.client)b+='<div><b>'+esc(d.client)+'</b>'+(d.tipo?' <i class="tipo'+(d.tipo==='Cliente final'?' cf':'')+'">'+esc(d.tipo)+'</i>':'')+(d.atend==='Treinamento técnico'?' <i class="tipo tr">Treinamento técnico</i>':'')+(d.contact?' · '+esc(d.contact):'')+'</div>';
+  if(d.machine)b+='<div class="mach'+(d.ready?'':' pend')+'">☕ '+esc(d.machine)+' — '+(d.ready?'✅ revisada e pronta':'⚠️ falta revisar / deixar pronta')+'</div>';
+  if(d.notes)b+='<div style="white-space:pre-wrap">'+esc(d.notes)+'</div>';
+  if(d.by)b+='<div class="meta">por '+esc(d.by)+'</div>';
+  return '<div class="slot '+d.status+'" '+(canWrite?'data-a="edit" data-k="'+k+'" data-t="'+x.t+'"':'')+'><span class="t">'+x.t+'</span><div class="body">'+b+'</div></div>';
+}
+function dayHtml(k){
+  const blk=S.days[k],has=slotsOf(k).some(x=>x.d);
+  let h='<div class="card"><h2>'+longDate(k)+'</h2>';
+  if(blk){
+    h+='<div class="dayoff">🚫 Dia indisponível'+(blk.reason?' — '+esc(blk.reason):'')+(blk.by?'<div class="meta" style="color:inherit;font-weight:400">por '+esc(blk.by)+'</div>':'')+'</div>';
+    if(canWrite)h+='<div class="row"><button class="pri" data-a="dayon" data-k="'+k+'">Liberar dia</button></div>';
+    if(has)h+='<div class="banner">Atenção: há horários preenchidos neste dia.</div>'+slotsOf(k).filter(x=>x.d).map(x=>slotHtml(k,x)).join('');
+    return h+'</div>';
+  }
+  h+='<div class="sub">Toque em um horário livre para agendar, reservar ou bloquear.</div>';
+  if(canWrite)h+='<div class="row"><button class="danger" data-a="dayoff" data-k="'+k+'">🚫 Marcar dia como indisponível</button></div>';
+  return h+slotsOf(k).map(x=>slotHtml(k,x)).join('')+'</div>';
+}
+function listHtml(){
+  const items=Object.entries(S.slots).filter(([id,d])=>id.slice(0,10)>=today&&(d.status==='agendado'||d.status==='reservado')&&(!pending||isPend(d))).sort((a,b)=>a[0]<b[0]?-1:1);
+  const offs=Object.entries(S.days).filter(([k])=>k>=today).sort();
+  let h='<div class="card"><div class="row" style="margin-top:0"><button class="'+(pending?'on':'')+'" data-a="pend">⚠️ Só máquinas sem revisão</button></div>';
+  if(!pending&&offs.length)h+='<div class="sub"><b>Dias indisponíveis:</b> '+offs.map(([k,v])=>'<a href="#" data-a="goto" data-k="'+k+'">'+pd(k).getDate()+'/'+pad(pd(k).getMonth()+1)+'</a>'+(v.reason?' ('+esc(v.reason)+')':'')).join(' · ')+'</div>';
+  if(!items.length)return h+'<div class="empty">Nenhuma visita '+(pending?'pendente de revisão':'futura')+'.</div></div>';
+  let last='';
+  items.forEach(([id,d])=>{const k=id.slice(0,10);if(k!==last){h+='<h2 style="margin-top:14px;font-size:15px">'+longDate(k)+'</h2>';last=k}
+    h+=slotHtml(k,{t:id.slice(11),d}).replace('class="slot ','data-x class="slot ')});
+  return h+'</div>';
+}
+function render(){
+  let h='';
+  if(window.__tried&&!apiReady)h+='<div class="banner">Sem conexão com o armazenamento compartilhado. Recarregue a página ou tente novamente.</div>';
+  if(!canWrite)h+='<div class="banner">Você tem acesso somente leitura.</div>';
+  h+='<div class="tabs"><button class="'+(view==='cal'?'on':'')+'" data-a="view" data-v="cal">📅 Calendário</button><button class="'+(view==='list'?'on':'')+'" data-a="view" data-v="list">📋 Próximas visitas</button></div>';
+  h+=view==='cal'?'<div class="card">'+calHtml()+'</div>'+dayHtml(sel):listHtml();
+  $('app').innerHTML=h;
+}
+
+function openModal(html){$('sheet').innerHTML=html;$('modal').classList.add('open')}
+function closeModal(){$('modal').classList.remove('open');mctx=null}
+function slotForm(){
+  const {k,t,d}=mctx,s=mstate,isB=s==='bloqueado';
+  return '<h3>'+longDate(k)+' · '+t+'</h3><div class="seg">'+['agendado','reservado','bloqueado'].map(x=>'<button class="'+(s===x?'on':'')+'" data-a="mset" data-s="'+x+'">'+LBL[x]+'</button>').join('')+'</div>'+
+  (isB?'':'<label>Cliente / empresa</label><input type="text" id="f_client" value="'+esc(d&&d.client)+'"><label>Tipo de cliente</label><select id="f_tipo"><option value="">Selecione…</option><option'+(d&&d.tipo==='Operador'?' selected':'')+'>Operador</option><option'+(d&&d.tipo==='Cliente final'?' selected':'')+'>Cliente final</option></select><label>Tipo de atendimento</label><select id="f_atend"><option'+(!d||!d.atend||d.atend==='Visita'?' selected':'')+'>Visita</option><option'+(d&&d.atend==='Treinamento técnico'?' selected':'')+'>Treinamento técnico</option></select><label>Contato (telefone / e-mail)</label><input type="text" id="f_contact" value="'+esc(d&&d.contact)+'"><label>Máquina que precisa estar pronta e revisada</label><input type="text" id="f_machine" placeholder="ex.: Rheavendors Zen, Bari..." value="'+esc(d&&d.machine)+'"><label class="chk"><input type="checkbox" id="f_ready" '+(d&&d.ready?'checked':'')+'> Máquina já revisada e pronta</label>')+
+  '<label>'+(isB?'Motivo do bloqueio':'Observações')+'</label><textarea id="f_notes">'+esc(d&&d.notes)+'</textarea><label>Seu nome (quem está registrando)</label><input type="text" id="f_by" value="'+esc(myName()||(d&&d.by))+'">'+
+  '<div class="row" style="margin-top:14px"><button class="pri" data-a="save" style="flex:1">Salvar</button><button data-a="close">Cancelar</button>'+(d?'<button class="danger" data-a="free">Liberar horário</button>':'')+'</div>';
+}
+function openSlot(k,t,s){
+  const d=S.slots[k+'_'+t];
+  mctx={k,t,d,isNew:!d,saw:d?JSON.stringify(d):''};mstate=d?d.status:s;openModal(slotForm());
+}
+function keepVals(){
+  const g=i=>{const e=$(i);return e?e.value:''};
+  if(mctx){mctx.d=Object.assign({},mctx.d||{},{client:g('f_client'),tipo:g('f_tipo'),atend:g('f_atend'),contact:g('f_contact'),machine:g('f_machine'),notes:g('f_notes'),by:g('f_by'),ready:$('f_ready')?$('f_ready').checked:false})}
+}
+async function saveSlot(){
+  const g=i=>{const e=$(i);return e?e.value.trim():''},{k,t}=mctx,id=k+'_'+t,s=mstate;
+  const data={status:s,client:g('f_client'),tipo:g('f_tipo'),atend:g('f_atend'),contact:g('f_contact'),machine:g('f_machine'),ready:$('f_ready')?$('f_ready').checked:false,notes:g('f_notes'),by:g('f_by'),updated:Date.now()};
+  if(s==='bloqueado'){data.client='';data.tipo='';data.atend='';data.contact='';data.machine='';data.ready=false}
+  if(s==='agendado'&&!data.client){toast('Informe o nome do cliente');return}
+  if(s==='agendado'&&!data.tipo){toast('Informe se é Operador ou Cliente final');return}
+  if(s==='reservado'&&!data.client&&!data.notes){toast('Informe o cliente ou uma observação');return}
+  if(!data.by){toast('Informe seu nome');return}
+  const now=S.slots[id];
+  if(now&&(mctx.isNew||JSON.stringify(now)!==mctx.saw)&&!confirm('Este horário foi alterado por outra pessoa'+(now.by?' ('+now.by+')':'')+'. Sobrescrever?'))return;
+  try{localStorage.setItem('showroom_nome',data.by)}catch(e){}
+  if(await put('slots',id,data)){closeModal();toast('Salvo ✔')}
+}
+function openDayOff(k){mctx={k};openModal('<h3>🚫 '+longDate(k)+'</h3><p class="sub">O dia ficará marcado como indisponível para toda a equipe.</p><label>Motivo</label><input type="text" id="f_notes" placeholder="ex.: feriado, evento, manutenção..."><label>Seu nome</label><input type="text" id="f_by" value="'+esc(myName())+'"><div class="row" style="margin-top:14px"><button class="pri" data-a="savedayoff" style="flex:1">Marcar indisponível</button><button data-a="close">Cancelar</button></div>')}
+
+document.addEventListener('click',async ev=>{
+  if(ev.target.id==='modal'){closeModal();return}
+  const el=ev.target.closest('[data-a]');if(!el)return;
+  const a=el.dataset.a,k=el.dataset.k;
+  if(a==='goto')ev.preventDefault();
+  if(a==='prev'){cur.setMonth(cur.getMonth()-1);render()}
+  else if(a==='next'){cur.setMonth(cur.getMonth()+1);render()}
+  else if(a==='pick'){sel=k;render()}
+  else if(a==='view'){view=el.dataset.v;render()}
+  else if(a==='pend'){pending=!pending;render()}
+  else if(a==='goto'){sel=k;cur=pd(k);cur.setDate(1);view='cal';render();scrollTo(0,0)}
+  else if(a==='new'||a==='edit'){if(canWrite)openSlot(k,el.dataset.t,el.dataset.s)}
+  else if(a==='mset'){keepVals();mstate=el.dataset.s;$('sheet').innerHTML=slotForm()}
+  else if(a==='save')saveSlot();
+  else if(a==='close')closeModal();
+  else if(a==='free'){if(confirm('Liberar este horário?')&&await del('slots',mctx.k+'_'+mctx.t)){closeModal();toast('Horário liberado')}}
+  else if(a==='dayoff'){if(canWrite){if(slotsOf(k).some(x=>x.d)&&!confirm('Já existem horários preenchidos neste dia. Marcar como indisponível mesmo assim?'))return;openDayOff(k)}}
+  else if(a==='savedayoff'){
+    const by=$('f_by').value.trim();if(!by){toast('Informe seu nome');return}
+    try{localStorage.setItem('showroom_nome',by)}catch(e){}
+    if(await put('days',mctx.k,{reason:$('f_notes').value.trim(),by,updated:Date.now()})){closeModal();toast('Dia marcado como indisponível')}}
+  else if(a==='dayon'){if(await del('days',k))toast('Dia liberado')}
+});
+window.__tried=false;
+init();
+</script></body></html>

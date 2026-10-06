@@ -1,0 +1,12 @@
+LUXOR VENDING — AGENDA DO SHOWROOM
+
+Este projeto foi preparado para publicação no Netlify.
+
+IMPORTANTE:
+- O site usa uma Netlify Function e Netlify Blobs para salvar a agenda de forma compartilhada.
+- Não é necessário Supabase.
+- Depois do deploy, todas as pessoas que acessarem o mesmo link verão os mesmos agendamentos.
+- Para atualizar uma versão já publicada, envie os arquivos deste projeto ao mesmo repositório conectado ao Netlify e aguarde o novo deploy.
+
+Se o site abrir mas mostrar "Sem conexão com o armazenamento compartilhado", abra o painel do Netlify > Functions e verifique se a função "agenda" foi implantada. O endpoint de teste é:
+/.netlify/functions/agenda
